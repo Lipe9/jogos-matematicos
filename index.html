@@ -14,19 +14,6 @@
 
   <!-- CARDS (layout 1: grade) -->
   <section class="cards-grid">
-    
-    <!-- QUIZ -->
-    <article class="card" data-game="quiz" onclick="showGame('quiz')">
-      <div class="card-icon">
-        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <circle cx="12" cy="12" r="9"></circle>
-          <path d="M9.09 9a3 3 0 1 1 5.82 1c0 1.5-1.5 2.25-1.5 2.25"></path>
-          <line x1="12" y1="17" x2="12.01" y2="17"></line>
-        </svg>
-      </div>
-      <h3>Quiz</h3>
-      <p>Perguntas de cálculo — aumente sua sequência.</p>
-    </article>
 
     <!-- RÁPIDAMENTE -->
     <article class="card" data-game="rapidamente" onclick="showGame('rapidamente')">
@@ -71,31 +58,12 @@
   <!-- ÁREA DOS JOGOS -->
   <main class="games-area">
 
-    <!-- QUIZ -->
-    <section id="quiz" class="game hidden">
-      <h2>Quiz Matemático</h2>
-
-      <label>Dificuldade:
-        <select id="quiz-dificuldade">
-          <option value="facil">Fácil</option>
-          <option value="medio">Médio</option>
-          <option value="dificil">Difícil</option>
-        </select>
-      </label>
-
-      <button class="btn" onclick="iniciarQuiz()">Iniciar Quiz</button>
-
-      <div id="quiz-container" class="panel"></div>
-      <p id="quiz-msg" class="msg"></p>
-      <p>Sequência atual: <span id="quiz-streak">0</span></p>
-    </section>
-
     <!-- RAPIDAMENTE -->
     <section id="rapidamente" class="game hidden">
       <h2>RápidaMente</h2>
 
       <label>Dificuldade:
-        <select id="rapido-dificuldade">
+        <select id="rapido-dificuldade" class="select">
           <option value="facil">Fácil</option>
           <option value="medio">Médio</option>
           <option value="dificil">Difícil</option>
@@ -114,7 +82,7 @@
       <h2>Sudoku</h2>
 
       <label>Dificuldade:
-        <select id="sudoku-dificuldade">
+        <select id="sudoku-dificuldade" class="select">
           <option value="facil">Fácil</option>
           <option value="medio">Médio</option>
           <option value="dificil">Difícil</option>
@@ -193,15 +161,14 @@
   <footer class="footer">
     <small> © Developed by Felipe.</small>
   </footer>
+   <div id="notify-container"></div>
 
   <!-- Scripts -->
-  <script src="js/script.js"></script>
+  <script src="js/main.js"></script>
   <script src="js/quiz.js"></script>
   <script src="js/rapidamente.js"></script>
   <script src="js/sudoku.js"></script>
   <script src="js/jornada.js"></script>
-
-  <div id="notify-container"></div>
 </body>
 </html>
 
