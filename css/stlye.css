@@ -1,0 +1,284 @@
+:root{
+  --bg:#000;
+  --panel:#0f1110;
+  --accent:#1aff7a;
+  --muted:#aaffdd;
+  --danger:#ff6b6b;
+  --card-border: rgba(26,255,122,0.14);
+}
+*{box-sizing:border-box}
+body{
+  background:var(--bg);
+  color:#fff;
+  font-family:Inter, "Segoe UI", Arial;
+  margin:0;
+  padding:24px;
+  -webkit-font-smoothing:antialiased;
+}
+
+.titulo{font-size:34px;margin:0;color:var(--accent)}
+.subtitulo{color:var(--muted);margin-top:6px;margin-bottom:22px}
+
+/* cards grid */
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  max-width:1100px;
+  margin: 14px auto 28px;
+}
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid var(--card-border);
+  padding:20px;
+  border-radius:12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  cursor:pointer;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  align-items:flex-start;
+}
+.card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.7);
+  border-color: rgba(26,255,122,0.35);
+}
+.card-icon{
+  width:56px;height:56px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  background: rgba(255,255,255,0.02);
+  color:var(--accent);
+}
+.card h3{margin:6px 0 0 0}
+.card p{margin:6px 0;color:#cfeee0;font-size:14px}
+.card-meta{margin-left:auto;color:var(--muted);font-size:20px;margin-top:auto}
+
+/* games area */
+.games-area{
+  max-width:1100px;
+  margin: 0 auto 28px;
+  display:block;
+}
+.game{
+  background:var(--panel);
+  border-radius:12px;
+  padding:18px;
+  margin-bottom:18px;
+  border:1px solid rgba(255,255,255,0.03);
+}
+.hidden{display:none}
+
+.game-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.rank{color:var(--muted);font-size:14px}
+
+/* controls, labels */
+.label{display:block;margin-bottom:10px}
+.select, input[type="number"], input[type="text"]{
+  padding:8px 10px;border-radius:8px;background:#000;border:1px solid rgba(255,255,255,0.06);color:var(--muted);
+}
+.controls{margin:10px 0 14px;display:flex;gap:10px;flex-wrap:wrap}
+
+.btn{
+  background:var(--accent);
+  color:#000;border:none;padding:10px 14px;border-radius:8px;font-weight:700;cursor:pointer;
+}
+.btn.outline{background:transparent;color:var(--accent);border:1px solid rgba(26,255,122,0.18)}
+.btn.small{padding:7px 10px;font-size:13px;border-radius:6px}
+
+/* panels and messages */
+.panel{margin-top:10px}
+.msg{margin-top:12px;font-weight:700}
+.msg.success{color:var(--accent)}
+.msg.error{color:var(--danger)}
+.streak{color:var(--muted);margin-top:8px}
+
+/* sudoku grid */
+.sudoku-grid{
+  display:grid;
+  grid-template-columns:repeat(9,40px);
+  gap:6px;
+  justify-content:center;
+  margin-top:14px;
+}
+.sudoku-grid input{
+  width:40px;height:40px;text-align:center;font-size:18px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);
+  background:transparent;color:var(--muted);
+}
+.sudoku-grid input:disabled{background:rgba(0,80,50,0.12);color:#dfffe6;font-weight:700}
+
+/* meta */
+.sudoku-meta{display:flex;gap:18px;color:var(--muted);margin-top:8px;align-items:center}
+.footer{max-width:1100px;margin:18px auto;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px}
+@media (max-width:900px){
+  .cards-grid{grid-template-columns:repeat(1,1fr)}
+  .game{padding:14px}
+  .sudoku-grid{grid-template-columns:repeat(9,36px)}
+}
+
+/* NOTIFICAÇÕES (toast canto superior direito) */
+#notify-container{
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
+}
+.notify{
+  background: #0f1110;
+  border: 1px solid rgba(26,255,122,0.14);
+  color: #cfeee0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  min-width: 220px;
+  max-width: 320px;
+  box-shadow: 0 8px 26px rgba(0,0,0,0.6);
+  transform: translateY(-8px);
+  opacity: 0;
+  transition: transform .25s ease, opacity .25s ease;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.notify.visible{ transform: translateY(0); opacity: 1; }
+.notify.success{ border-color: rgba(26,255,122,0.45); color: #bffdce; }
+.notify.error{ border-color: rgba(255,107,107,0.4); color: #ffd0d0; }
+.notify .notify-close{
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-weight:700;
+  cursor: pointer;
+  padding: 4px;
+  margin-left:8px;
+}
+@keyframes notify-out {
+  to { opacity: 0; transform: translateY(-12px); }
+}
+
+/* INPUTS DE RESPOSTA (QUIZ e RÁPIDAMENTE) */
+.game input[type="text"],
+.game input[type="number"] {
+  width: 100%;
+  max-width: 260px;
+  padding: 12px 16px;
+  font-size: 18px;
+  
+  border-radius: 10px;
+  border: 2px solid rgba(26,255,122,0.25);
+  background: #0c0f0d;
+  color: var(--muted);
+
+  transition: 
+    border-color .25s ease,
+    background .25s ease,
+    box-shadow .25s ease,
+    transform .2s ease;
+}
+
+.game input[type="text"]:focus,
+.game input[type="number"]:focus {
+  background: rgba(26,255,122,0.08);
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(26,255,122,0.28);
+  transform: scale(1.03);
+}
+
+.game input.correct {
+  border-color: var(--accent);
+  background: rgba(26,255,122,0.12);
+  color: #dfffef;
+}
+
+.game input.wrong {
+  border-color: var(--danger);
+  background: rgba(255,0,0,0.08);
+}
+/* SELECT (DIFICULDADE) */
+.select {
+  appearance: none;
+  width: 200px;
+  padding: 10px 14px;
+  font-size: 16px;
+
+  background: #0c0f0d;
+  border: 2px solid rgba(26,255,122,0.25);
+  color: var(--muted);
+  border-radius: 10px;
+
+  background-image: linear-gradient(45deg, transparent 50%, var(--accent) 50%),
+                    linear-gradient(135deg, var(--accent) 50%, transparent 50%);
+  background-position: calc(100% - 20px) calc(1rem),
+                       calc(100% - 15px) calc(1rem);
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+
+  transition: border-color .25s ease, box-shadow .25s ease;
+}
+
+.select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(26,255,122,0.25);
+}
+
+.select:hover {
+  border-color: rgba(26,255,122,0.45);
+}
+/* destaque visual para célula incorreta */
+.sudoku-grid input.incorrect {
+  border-color: var(--danger);
+  background: rgba(255, 0, 0, 0.08);
+  color: #ffdfe0;
+  box-shadow: 0 0 8px rgba(255,0,0,0.08);
+}
+
+/* melhorar estilo das células editáveis */
+.sudoku-grid input {
+  caret-color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* highlight quando focado */
+.sudoku-grid input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(26,255,122,0.12);
+  background: rgba(26,255,122,0.02);
+}
+/* ---------- Jornada dos Números (RPG) ---------- */
+.jornada-hero, .jornada-inventory, .jornada-left, .jornada-right, #jornada-log {
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  border: 1px solid rgba(26,255,122,0.06);
+  padding: 12px;
+  border-radius: 10px;
+}
+
+#jornada-items .item {
+  background: rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.03);
+  padding:6px 8px;
+  border-radius:8px;
+  font-weight:700;
+  color:var(--muted);
+}
+
+#jornada-narrativa { font-size:15px; line-height:1.45; }
+#jornada-challenge h4 { margin:8px 0 6px; }
+#jornada-actions .answer-input { display:inline-block; width:140px; margin-right:8px; vertical-align:middle; }
+
+/* log */
+#jornada-log { font-size:14px; color:var(--muted); }
+
+/* destaque de drops / recompensas */
+.jornada-drop { color: var(--accent); font-weight:800; }
+
+/* responsividade */
+@media (max-width:900px) {
+  .jornada-body { flex-direction:column; }
+  .jornada-right { width:100%; }
+}

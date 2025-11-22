@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Jogos de Matemática</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="css/stlye.css">
+</head>
+<body>
+  <header>
+    <h1 class="titulo">Jogos de Matemática</h1>
+    <p class="subtitulo">Treine Lógica e Cálculo.</p>
+  </header>
+
+  <!-- CARDS (layout 1: grade) -->
+  <section class="cards-grid">
+    
+    <!-- QUIZ -->
+    <article class="card" data-game="quiz" onclick="showGame('quiz')">
+      <div class="card-icon">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M9.09 9a3 3 0 1 1 5.82 1c0 1.5-1.5 2.25-1.5 2.25"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+      </div>
+      <h3>Quiz</h3>
+      <p>Perguntas de cálculo — aumente sua sequência.</p>
+    </article>
+
+    <!-- RÁPIDAMENTE -->
+    <article class="card" data-game="rapidamente" onclick="showGame('rapidamente')">
+      <div class="card-icon">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"></path>
+        </svg>
+      </div>
+      <h3>RápidaMente</h3>
+      <p>Calcule rápido antes que o tempo acabe.</p>
+    </article>
+
+    <!-- SUDOKU -->
+    <article class="card" data-game="sudoku" onclick="showGame('sudoku')">
+      <div class="card-icon">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+        </svg>
+      </div>
+      <h3>Sudoku</h3>
+      <p>Gere tabuleiros e finalize para corrigir.</p>
+    </article>
+
+    <!-- JORNADA DOS NÚMEROS -->
+    <article class="card" data-game="jornada" onclick="showGame('jornada')">
+      <div class="card-icon">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M4 4.5A2.5 2.5 0 0 1 6.5 7H20v10"></path>
+          <path d="M8 8l1.5 3L11 8l1.5 3L14 8" />
+        </svg>
+      </div>
+      <h3>A Jornada dos Números</h3>
+      <p>RPG: evolua, lute e resolva desafios matemáticos.</p>
+    </article>
+
+  </section>
+
+  <!-- ÁREA DOS JOGOS -->
+  <main class="games-area">
+
+    <!-- QUIZ -->
+    <section id="quiz" class="game hidden">
+      <h2>Quiz Matemático</h2>
+
+      <label>Dificuldade:
+        <select id="quiz-dificuldade">
+          <option value="facil">Fácil</option>
+          <option value="medio">Médio</option>
+          <option value="dificil">Difícil</option>
+        </select>
+      </label>
+
+      <button class="btn" onclick="iniciarQuiz()">Iniciar Quiz</button>
+
+      <div id="quiz-container" class="panel"></div>
+      <p id="quiz-msg" class="msg"></p>
+      <p>Sequência atual: <span id="quiz-streak">0</span></p>
+    </section>
+
+    <!-- RAPIDAMENTE -->
+    <section id="rapidamente" class="game hidden">
+      <h2>RápidaMente</h2>
+
+      <label>Dificuldade:
+        <select id="rapido-dificuldade">
+          <option value="facil">Fácil</option>
+          <option value="medio">Médio</option>
+          <option value="dificil">Difícil</option>
+        </select>
+      </label>
+
+      <button class="btn" onclick="iniciarRapidamente()">Iniciar</button>
+
+      <div id="rapido-container" class="panel"></div>
+      <p id="rapido-msg" class="msg"></p>
+      <p>Pontos: <span id="rapido-streak">0</span></p>
+    </section>
+
+    <!-- SUDOKU -->
+    <section id="sudoku" class="game hidden">
+      <h2>Sudoku</h2>
+
+      <label>Dificuldade:
+        <select id="sudoku-dificuldade">
+          <option value="facil">Fácil</option>
+          <option value="medio">Médio</option>
+          <option value="dificil">Difícil</option>
+        </select>
+      </label>
+
+      <button class="btn" onclick="gerarSudoku()">Gerar Sudoku</button>
+      <button class="btn outline" onclick="corrigirSudoku()">Finalizar</button>
+
+      <div class="sudoku-meta">
+        <div>Tempo: <span id="sudoku-timer">00:00</span></div>
+        <div id="sudoku-status"></div>
+      </div>
+
+      <div id="sudoku-container" class="sudoku-grid"></div>
+      <p id="sudoku-msg"></p>
+    </section>
+
+    <section id="jornada" class="game hidden">
+
+  <h2>A Jornada dos Números</h2>
+
+  <div class="jornada-top" style="display:flex;gap:14px;flex-wrap:wrap;">
+    
+    <!-- Herói -->
+    <div class="panel jornada-hero" style="min-width:220px;">
+      <h3>Herói</h3>
+      <p><strong>Nome:</strong> <span id="jornada-hero-name">Aventureiro</span></p>
+      <p><strong>HP:</strong> <span id="jornada-hero-hp">20/20</span></p>
+      <p><strong>XP:</strong> <span id="jornada-hero-xp">0</span></p>
+
+      <button class="btn" onclick="enfrentarDesafio()">Enfrentar Desafio</button>
+      <button class="btn outline" onclick="desistirFase()">Desistir</button>
+    </div>
+
+    <!-- Inventário -->
+    <div class="panel jornada-inventory" style="flex:1;min-width:260px;">
+      <h3>Inventário</h3>
+      <div id="jornada-items"></div>
+    </div>
+  </div>
+
+  <div class="jornada-body" style="margin-top:14px;display:flex;gap:16px;flex-wrap:wrap;">
+
+    <!-- Área da Fase -->
+    <div class="panel jornada-left" style="flex:1;min-width:320px;">
+      <h3>Fase <span id="jornada-phase">1</span></h3>
+
+      <p><strong>Inimigo:</strong> <span id="jornada-enemy-name">—</span></p>
+      <p><strong>HP do inimigo:</strong> <span id="jornada-enemy-hp">—</span></p>
+
+      <div id="jornada-question" style="font-size:22px;margin-top:8px;"></div>
+
+      <input id="jornada-answer" type="number" placeholder="Sua resposta" class="input" style="margin-top:8px;">
+
+      <div id="jornada-actions" style="margin-top:8px;">
+        <button class="btn" onclick="responderJornada()">Responder</button>
+      </div>
+    </div>
+
+    <!-- Log -->
+    <div class="panel jornada-right" style="width:300px;min-width:260px;">
+      <h3>Registro</h3>
+      <div id="jornada-log" style="min-height:120px;max-height:220px;overflow:auto;">
+        <em>Aguardando desafio...</em>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+
+  </main>
+
+  <footer class="footer">
+    <small>Dados salvos no navegador.</small>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/script.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/rapidamente.js"></script>
+  <script src="js/sudoku.js"></script>
+  <script src="js/jornada.js"></script>
+
+  <div id="notify-container"></div>
+</body>
+</html>
