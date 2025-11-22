@@ -4,7 +4,8 @@
   <meta charset="utf-8" />
   <title>Jogos de Matemática</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="css/stlye.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sudoku.css">
 </head>
 <body>
   <header>
@@ -80,8 +81,21 @@
     <!-- SUDOKU -->
     <section id="sudoku" class="game hidden">
       <h2>Sudoku</h2>
+      <!-- Cabeçalho exclusivo do modo tela cheia -->
+<div id="fullscreen-top" class="fullscreen-top" style="display:none;">
+  <button class="fullscreen-back" onclick="toggleFullscreen()">Voltar</button>
+    <select id="sudoku-dificuldade" class="select">
+      <option value="facil">Fácil</option>
+      <option value="medio">Médio</option>
+      <option value="dificil">Difícil</option>
+    </select>
+  <button class="btn2" onclick="gerarSudoku()">Gerar Sudoku</button>
+  <button class="btn2 outline" onclick="corrigirSudoku()">Finalizar</button>
+  <div class="fullscreen-timer">⏱ <span id="sudoku-timer-full">00:00</span></div>
+</div>
 
-      <label>Dificuldade:
+
+      <label class="label">Dificuldade:
         <select id="sudoku-dificuldade" class="select">
           <option value="facil">Fácil</option>
           <option value="medio">Médio</option>
@@ -91,6 +105,7 @@
 
       <button class="btn" onclick="gerarSudoku()">Gerar Sudoku</button>
       <button class="btn outline" onclick="corrigirSudoku()">Finalizar</button>
+      <button class="btn outline" onclick="toggleFullscreen()">Tela Cheia</button>
 
       <div class="sudoku-meta">
         <div>Tempo: <span id="sudoku-timer">00:00</span></div>

@@ -1,0 +1,156 @@
+.sudoku-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 40px);
+    gap: 0;
+    justify-content: center;
+    margin-top: 14px;
+}
+.sudoku-grid input.incorrect {
+  border-color: var(--danger);
+  background: rgba(205, 5, 5, 0.367);
+  color: white;
+}
+
+/* melhorar estilo das células editáveis */
+.sudoku-grid input {
+  caret-color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* highlight quando focado */
+.sudoku-grid input:focus {
+  outline: none;
+  background: rgba(7, 152, 67, 0.274);
+}
+.sudoku-grid input {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+    /* Define uma borda fina padrão */
+    border: 2px solid white;
+    background: transparent;
+    color: white;
+    /* Garante que o input não tenha suas próprias bordas que atrapalhem */
+    box-sizing: border-box; 
+}
+/* Borda à esquerda grossa para as 4ª e 7ª colunas (colunas 3*n + 1) */
+.sudoku-grid input:nth-child(9n + 4),
+.sudoku-grid input:nth-child(9n + 7) {
+    border-left: 4px solid green;
+}
+
+/* Borda superior grossa para as linhas 4, 5, 6 e 7, 8, 9 (linhas 3*n + 1) */
+/* Isso afeta todas as células que estão na 4ª e 7ª linha. */
+.sudoku-grid input:nth-child(n + 28):nth-child(-n + 36), /* 4ª linha */
+.sudoku-grid input:nth-child(n + 55):nth-child(-n + 63) { /* 7ª linha */
+    border-top: 4px solid green;
+}
+.sudoku-grid input:nth-child(n + 19):nth-child(-n + 27), /* 4ª linha */
+.sudoku-grid input:nth-child(n + 46):nth-child(-n + 54) { /* 7ª linha */
+    border-bottom: 0px solid green;
+}
+
+/* Ajustes para a borda interna de 1px para as linhas/colunas onde a borda de 3px foi aplicada */
+/* Garante que a borda interna não seja mais escura, mas mantida. 
+   O border-box já ajuda, mas essas bordas laterais/superiores dominam. */
+.sudoku-grid input:nth-child(9n + 3),
+.sudoku-grid input:nth-child(9n + 6) {
+    border-right: 0px solid green;
+}
+/* A borda inferior é mais complexa de ajustar com :nth-child(n + X):nth-child(-n + Y), 
+   então geralmente a prioridade é dada às bordas superiores e esquerdas. */
+/* meta */
+
+.sudoku-meta{display:flex;gap:18px;color:var(--muted);margin-top:8px;align-items:center}
+.footer{max-width:1100px;margin:18px auto;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px}
+@media (max-width:900px){
+  .cards-grid{grid-template-columns:repeat(1,1fr)}
+  .game{padding:14px}
+  .sudoku-grid{grid-template-columns:repeat(9,36px)}
+}
+
+
+/* --- MODO TELA CHEIA --- */
+.sudoku-fullscreen {
+  position: fixed !important;
+  inset: 0;
+  z-index: 9999;
+
+  background: #000c;
+
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding: 12px;
+  overflow-y: auto;
+}
+
+/* ------ MODO TELA CHEIA DO SUDOKU ------ */
+.sudoku-fullscreen {
+  position: fixed !important;
+  inset: 0;
+  z-index: 9999;
+  background: #0f1110;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px;
+  overflow-y: auto;
+}
+
+/* Esconde tudo que não deve aparecer no modo fullscreen */
+.sudoku-fullscreen h2,
+.sudoku-fullscreen .select1,
+.sudoku-fullscreen .btn:not(.fullscreen-back),
+.sudoku-fullscreen .label,
+.sudoku-fullscreen #sudoku-status,
+.sudoku-fullscreen #sudoku-msg,
+.sudoku-fullscreen .sudoku-meta
+
+{
+  display: none !important;
+}
+
+/* Cabeçalho do modo fullscreen */
+.fullscreen-top {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
+  gap: 10px;
+}
+
+.fullscreen-back {
+  background: #ff3c3c;
+  color: white;
+  padding: 8px 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+}
+
+.fullscreen-timer {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Redimensionamento suave do tabuleiro */
+.sudoku-fullscreen .sudoku-grid {
+  transform: scale(1.25);
+  margin-top: 10px;
+}
+
+@media (max-width: 500px) {
+  .sudoku-fullscreen .sudoku-grid {
+    transform: scale(1);
+  }
+}
+
+

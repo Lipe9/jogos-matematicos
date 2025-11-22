@@ -74,11 +74,14 @@ function gerarSudoku() {
   renderSudoku(g);
   startSudokuTimer();
 
-  const msg = document.getElementById("sudoku-msg"); if (msg) msg.textContent = "";
-  const status = document.getElementById("sudoku-status"); if (status) status.textContent = "Boa sorte!";
+  const msg = document.getElementById("sudoku-msg"); 
+  if (msg) msg.textContent = "";
+  
+  const status = document.getElementById("sudoku-status"); 
+  if (status) status.textContent = "Boa sorte!";
 }
 
-/* === RENDERIZA GRID NA TELA (com sanitização e listeners) === */
+/* === RENDERIZA GRID (com sanitização) === */
 function renderSudoku(grid) {
   const cont = document.getElementById("sudoku-container");
   cont.innerHTML = "";
@@ -87,7 +90,6 @@ function renderSudoku(grid) {
     linha.forEach((val, c) => {
       const inp = document.createElement("input");
 
-      // configuração do input para mobile/numérico
       inp.type = "tel";
       inp.inputMode = "numeric";
       inp.pattern = "[1-9]";
@@ -95,7 +97,7 @@ function renderSudoku(grid) {
 
       inp.dataset.row = r;
       inp.dataset.col = c;
-      inp.classList.remove('incorrect');
+      inp.classList.remove("incorrect");
 
       if (val !== 0) {
         inp.value = String(val);
@@ -105,23 +107,20 @@ function renderSudoku(grid) {
         inp.value = "";
         inp.disabled = false;
 
-        // handlers para sanitizar entrada
         inp.addEventListener("input", (e) => {
-          // aceita somente 1-9, remove tudo o que não for [1-9]
           const v = e.target.value.replace(/[^1-9]/g, "").slice(0,1);
           e.target.value = v;
-          // remove classe de incorreto quando o usuário muda
           e.target.classList.remove("incorrect");
         });
 
-        // impedir colar de texto grande; aceita apenas primeiro dígito válido
         inp.addEventListener("paste", (e) => {
           e.preventDefault();
-          const paste = (e.clipboardData || window.clipboardData).getData("text").replace(/[^1-9]/g, "");
+          const paste = (e.clipboardData || window.clipboardData)
+            .getData("text")
+            .replace(/[^1-9]/g, "");
           if (paste && paste.length) inp.value = paste[0];
         });
 
-        // opcional: navegar com arrow keys
         inp.addEventListener("keydown", (e) => {
           const key = e.key;
           if (key === "ArrowRight") { focusNeighbor(r, c+1); e.preventDefault(); }
@@ -148,11 +147,24 @@ function focusNeighbor(r, c) {
 function startSudokuTimer() {
   stopSudokuTimer();
   sudokuSeconds = 0;
+
   const timerEl = document.getElementById("sudoku-timer");
   if (timerEl) timerEl.textContent = formatTime(sudokuSeconds);
+
+  // Timer Fullscreen também inicia zerado
+  const timerFull = document.getElementById("sudoku-timer-full");
+  if (timerFull) timerFull.textContent = formatTime(sudokuSeconds);
+
   sudokuTimer = setInterval(() => {
     sudokuSeconds++;
+
+    // Atualiza timer normal
     if (timerEl) timerEl.textContent = formatTime(sudokuSeconds);
+
+    // Atualiza timer fullscreen sincronizado
+    const timerFullLive = document.getElementById("sudoku-timer-full");
+    if (timerFullLive) timerFullLive.textContent = formatTime(sudokuSeconds);
+
   }, 1000);
 }
 
@@ -173,45 +185,70 @@ function corrigirSudoku() {
 
   const inputs = Array.from(document.querySelectorAll("#sudoku-container input"));
   let erros = 0;
-  let preenchidos = 0;
 
   inputs.forEach(inp => {
     inp.classList.remove("incorrect");
     const r = Number(inp.dataset.row);
     const c = Number(inp.dataset.col);
     const vStr = inp.value.trim();
+
     if (vStr === "") {
-      // vazio, conta como não preenchido but not necessarily an "error" visual until user finaliza
-      preenchidos++;
-      // treat empty as wrong for scoring; if you prefer, change logic
       erros++;
       inp.classList.add("incorrect");
       return;
     }
+
     const v = Number(vStr);
-    if (isNaN(v) || v < 1 || v > 9) {
+    if (v !== sudokuCompleto[r][c]) {
       erros++;
       inp.classList.add("incorrect");
-    } else {
-      preenchidos++;
-      if (v !== sudokuCompleto[r][c]) {
-        erros++;
-        inp.classList.add("incorrect");
-      }
     }
   });
 
   const msg = document.getElementById("sudoku-msg");
+
   if (erros === 0) {
-    if (msg) { msg.textContent = `✔ Sudoku concluído! Tempo: ${formatTime(sudokuSeconds)}`; msg.className = "msg success"; }
-    if (typeof playSound === "function") playSound("ok");
+    if (msg) { 
+      msg.textContent = `✔ Sudoku concluído! Tempo: ${formatTime(sudokuSeconds)}`;
+      msg.className = "msg success"; 
+    }
     if (typeof notify === "function") notify("🎉 Parabéns! Sudoku perfeito!");
   } else {
-    if (msg) { msg.textContent = `❌ Há ${erros} erro(s).`; msg.className = "msg error"; }
-    if (typeof playSound === "function") playSound("bad");
+    if (msg) { 
+      msg.textContent = `❌ Há ${erros} erro(s).`; 
+      msg.className = "msg error"; 
+    }
     if (typeof notify === "function") notify(`⚠ Existem ${erros} erro(s).`, "error");
-    // scroll to first incorrect cell for convenience
+
     const firstWrong = document.querySelector("#sudoku-container input.incorrect");
     if (firstWrong) firstWrong.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
+
+/* === FULLSCREEN === */
+let fullscreenAtivo = false;
+
+function toggleFullscreen() {
+  const area = document.getElementById("sudoku");
+  const headerFS = document.getElementById("fullscreen-top");
+  const timerNormal = document.getElementById("sudoku-timer");
+  const timerFull = document.getElementById("sudoku-timer-full");
+
+  if (!fullscreenAtivo) {
+    area.classList.add("sudoku-fullscreen");
+    headerFS.style.display = "flex";
+
+    // Copiar o tempo atual para o timer fullscreen
+    timerFull.textContent = timerNormal.textContent;
+
+    fullscreenAtivo = true;
+
+    setTimeout(() => window.scrollTo(0, 0), 50);
+
+  } else {
+    area.classList.remove("sudoku-fullscreen");
+    headerFS.style.display = "none";
+
+    fullscreenAtivo = false;
   }
 }
