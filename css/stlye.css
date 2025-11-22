@@ -4,7 +4,7 @@
   --accent:#1aff7a;
   --muted:#aaffdd;
   --danger:#ff6b6b;
-  --card-border: rgba(26,255,122,0.14);
+  --card-border: rgba(0, 213, 89, 0.377);
 }
 *{box-sizing:border-box}
 body{
@@ -29,7 +29,7 @@ body{
 }
 .card{
   background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border:1px solid var(--card-border);
+  border: 2px solid var(--card-border);
   padding:20px;
   border-radius:12px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.6);
@@ -282,3 +282,4 @@ body{
   .jornada-body { flex-direction:column; }
   .jornada-right { width:100%; }
 }
+
