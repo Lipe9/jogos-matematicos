@@ -2,185 +2,62 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <title>Jogos de Matemática</title>
+  <title>Mathverse · Jogos de Matemática</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b1020" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/sudoku.css">
 </head>
 <body>
-  <header>
-    <h1 class="titulo">Jogos de Matemática</h1>
-    <p class="subtitulo">Treine Lógica e Cálculo.</p>
+  <div class="bg" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+    <div class="symbols" id="symbols"></div>
+  </div>
+
+  <header class="topbar">
+    <a class="brand" href="#" id="brand"><span class="logo">∑</span><span>Mathverse</span></a>
+    <button class="icon-btn" id="btn-sound" title="Som" aria-label="Alternar som">🔊</button>
   </header>
 
-  <!-- CARDS (layout 1: grade) -->
-  <section class="cards-grid">
-
-    <!-- RÁPIDAMENTE -->
-    <article class="card" data-game="rapidamente" onclick="showGame('rapidamente')">
-      <div class="card-icon">
-        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"></path>
-        </svg>
+  <main>
+    <!-- HUB -->
+    <section id="hub">
+      <div class="hero">
+        <p class="eyebrow">Treine lógica · Cálculo · Raciocínio</p>
+        <h1>Matemática que <em>vira jogo</em>.</h1>
+        <p class="lead">Oito desafios para afiar a mente. Escolha um e bata seus recordes.</p>
       </div>
-      <h3>RápidaMente</h3>
-      <p>Calcule rápido antes que o tempo acabe.</p>
-    </article>
-
-    <!-- SUDOKU -->
-    <article class="card" data-game="sudoku" onclick="showGame('sudoku')">
-      <div class="card-icon">
-        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <rect x="3" y="3" width="7" height="7"></rect>
-          <rect x="14" y="3" width="7" height="7"></rect>
-          <rect x="3" y="14" width="7" height="7"></rect>
-          <rect x="14" y="14" width="7" height="7"></rect>
-        </svg>
-      </div>
-      <h3>Sudoku</h3>
-      <p>Gere tabuleiros e finalize para corrigir.</p>
-    </article>
-
-    <!-- JORNADA DOS NÚMEROS -->
-    <article class="card" data-game="jornada" onclick="showGame('jornada')">
-      <div class="card-icon">
-        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-          <path d="M4 4.5A2.5 2.5 0 0 1 6.5 7H20v10"></path>
-          <path d="M8 8l1.5 3L11 8l1.5 3L14 8" />
-        </svg>
-      </div>
-      <h3>A Jornada dos Números</h3>
-      <p>RPG: evolua, lute e resolva desafios matemáticos.</p>
-    </article>
-
-  </section>
-
-  <!-- ÁREA DOS JOGOS -->
-  <main class="games-area">
-
-    <!-- RAPIDAMENTE -->
-    <section id="rapidamente" class="game hidden">
-      <h2>RápidaMente</h2>
-
-      <label>Dificuldade:
-        <select id="rapido-dificuldade" class="select">
-          <option value="facil">Fácil</option>
-          <option value="medio">Médio</option>
-          <option value="dificil">Difícil</option>
-        </select>
-      </label>
-
-      <button class="btn" onclick="iniciarRapidamente()">Iniciar</button>
-
-      <div id="rapido-container" class="panel"></div>
-      <p id="rapido-msg" class="msg"></p>
-      <p>Pontos: <span id="rapido-streak">0</span></p>
+      <div class="cards" id="cards"></div>
     </section>
 
-    <!-- SUDOKU -->
-    <section id="sudoku" class="game hidden">
-      <h2>Sudoku</h2>
-      <!-- Cabeçalho exclusivo do modo tela cheia -->
-<div id="fullscreen-top" class="fullscreen-top" style="display:none;">
-  <button class="fullscreen-back" onclick="toggleFullscreen()">Voltar</button>
-  <button class="btn2" onclick="gerarSudoku()">Gerar Sudoku</button>
-  <button class="btn2 outline" onclick="corrigirSudoku()">Finalizar</button>
-  <div class="fullscreen-timer">⏱ <span id="sudoku-timer-full">00:00</span></div>
-</div>
-
-
-      <label class="label">Dificuldade:
-        <select id="sudoku-dificuldade" class="select">
-          <option value="facil">Fácil</option>
-          <option value="medio">Médio</option>
-          <option value="dificil">Difícil</option>
-        </select>
-      </label>
-
-      <button class="btn" onclick="gerarSudoku()">Gerar Sudoku</button>
-      <button class="btn outline" onclick="corrigirSudoku()">Finalizar</button>
-      <button class="btn outline" onclick="toggleFullscreen()">Tela Cheia</button>
-
-      <div class="sudoku-meta">
-        <div>Tempo: <span id="sudoku-timer">00:00</span></div>
-        <div id="sudoku-status"></div>
+    <!-- PALCO -->
+    <section id="stage" class="hidden">
+      <div class="stage-bar">
+        <button class="btn ghost" id="btn-back">← Jogos</button>
+        <h2 id="stage-title"></h2>
+        <span></span>
       </div>
-
-      <div id="sudoku-container" class="sudoku-grid"></div>
-      <p id="sudoku-msg"></p>
+      <div id="game-root"></div>
     </section>
-
-    <section id="jornada" class="game hidden">
-
-  <h2>A Jornada dos Números</h2>
-
-  <div class="jornada-top" style="display:flex;gap:14px;flex-wrap:wrap;">
-    
-    <!-- Herói -->
-    <div class="panel jornada-hero" style="min-width:220px;">
-      <h3>Herói</h3>
-      <p><strong>Nome:</strong> <span id="jornada-hero-name">Aventureiro</span></p>
-      <p><strong>HP:</strong> <span id="jornada-hero-hp">20/20</span></p>
-      <p><strong>XP:</strong> <span id="jornada-hero-xp">0</span></p>
-
-      <button class="btn" onclick="enfrentarDesafio()">Enfrentar Desafio</button>
-      <button class="btn outline" onclick="desistirFase()">Desistir</button>
-    </div>
-
-    <!-- Inventário -->
-    <div class="panel jornada-inventory" style="flex:1;min-width:260px;">
-      <h3>Inventário</h3>
-      <div id="jornada-items"></div>
-    </div>
-  </div>
-
-  <div class="jornada-body" style="margin-top:14px;display:flex;gap:16px;flex-wrap:wrap;">
-
-    <!-- Área da Fase -->
-    <div class="panel jornada-left" style="flex:1;min-width:320px;">
-      <h3>Fase <span id="jornada-phase">1</span></h3>
-
-      <p><strong>Inimigo:</strong> <span id="jornada-enemy-name">—</span></p>
-      <p><strong>HP do inimigo:</strong> <span id="jornada-enemy-hp">—</span></p>
-
-      <div id="jornada-question" style="font-size:22px;margin-top:8px;"></div>
-
-      <input id="jornada-answer" type="number" placeholder="Sua resposta" class="input" style="margin-top:8px;">
-
-      <div id="jornada-actions" style="margin-top:8px;">
-        <button class="btn" onclick="responderJornada()">Responder</button>
-      </div>
-    </div>
-
-    <!-- Log -->
-    <div class="panel jornada-right" style="width:300px;min-width:260px;">
-      <h3>Registro</h3>
-      <div id="jornada-log" style="min-height:120px;max-height:220px;overflow:auto;">
-        <em>Aguardando desafio...</em>
-      </div>
-    </div>
-
-  </div>
-
-</section>
-
-
   </main>
 
   <footer class="footer">
-    <small> © Developed by Felipe Silva, Miquéias Ferreira e Antonio Carlos.</small>
+    <small>© Developed by Felipe Silva, Miquéias Ferreira e Antonio Carlos.</small>
   </footer>
-   <div id="notify-container"></div>
 
-  <!-- Scripts -->
-  <script src="js/main.js"></script>
-  <script src="js/quiz.js"></script>
-  <script src="js/rapidamente.js"></script>
+  <div id="notify-container"></div>
+
+  <script src="js/core.js"></script>
   <script src="js/sudoku.js"></script>
+  <script src="js/rapidamente.js"></script>
+  <script src="js/memoria.js"></script>
+  <script src="js/sequencia.js"></script>
+  <script src="js/jogo24.js"></script>
+  <script src="js/verdadeiro.js"></script>
+  <script src="js/g2048.js"></script>
   <script src="js/jornada.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
-
-
-
